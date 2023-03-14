@@ -17,7 +17,7 @@ class MainApplication : Application(), ReactApplication {
 
         override fun getPackages() = PackageList(this).packages.apply {
             // Add your custom package
-//                add(MyPackage())
+                add(RNLocalStoragePackages())
         }
 
         override fun getJSMainModuleName() = "index"
