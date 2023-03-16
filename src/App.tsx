@@ -1,24 +1,28 @@
-import {SafeAreaView, Text, NativeModules, View, StyleSheet} from 'react-native'
-const localStorageModule = NativeModules.LocalStorageModule
+import {NavigationContainer} from '@react-navigation/native'
+import {createNativeStackNavigator} from '@react-navigation/native-stack'
+
+import AsyncMethods from './screens/AsyncMethods'
+import SyncMethods from './screens/SyncMethods'
+import Constants from './screens/Constants'
+import Home from './screens/Home'
+
+const RootStack = createNativeStackNavigator()
 
 function App() {
   return (
-    <SafeAreaView>
-      <Text style={appStyles.title}>Native Constants</Text>
-      <View style={appStyles.wrapper}>
-        <Text>{JSON.stringify(localStorageModule, null, 2)}</Text>
-      </View>
-    </SafeAreaView>
+    <NavigationContainer>
+      <RootStack.Navigator initialRouteName="Home">
+        <RootStack.Screen
+          name="Home"
+          component={Home}
+          options={{title: 'RN Native Modules'}}
+        />
+        <RootStack.Screen name="Constants" component={Constants} />
+        <RootStack.Screen name="AsyncMethods" component={AsyncMethods} />
+        <RootStack.Screen name="SyncMethods" component={SyncMethods} />
+      </RootStack.Navigator>
+    </NavigationContainer>
   )
 }
-
-const appStyles = StyleSheet.create({
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    padding: 10,
-  },
-  wrapper: {marginLeft: 20},
-})
 
 export default App
