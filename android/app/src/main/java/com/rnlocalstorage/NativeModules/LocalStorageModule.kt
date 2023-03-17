@@ -1,14 +1,15 @@
 package com.rnlocalstorage.NativeModules
 
 
-import android.util.Log
+
+import com.facebook.common.internal.Throwables
 import com.facebook.react.bridge.Arguments
+import com.facebook.react.bridge.Callback
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
-import com.facebook.react.bridge.WritableMap
-import com.facebook.react.bridge.WritableNativeMap
+import com.facebook.react.bridge.WritableNativeArray
 
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*
@@ -37,25 +38,57 @@ class LocalStorageModule(reactContext: ReactApplicationContext): ReactContextBas
     @ReactMethod
     fun getTodos(promise: Promise) {
         try {
-            val rawData = URL("https://jsonplaceholder.typicode.com/todos").openStream().bufferedReader().use { it.readText() }
-            val todos = Json.decodeFromString<List<Todo>>(rawData)
+            val todos = this.fetchTodos()
+            val todosWritableNativeArray = this.makeWritableNativeTodo(todos)
 
-            val todosListNativeMap = todos.map {
-                Arguments.makeNativeMap(
-                    mapOf(
-                        "id" to it.id,
-                        "title" to it.title,
-                        "userId" to it.userId,
-                        "completed" to it.completed
-                    )
-                )
-            }
-
-            promise.resolve(Arguments.makeNativeArray(todosListNativeMap))
+            promise.resolve(todosWritableNativeArray)
         } catch (e: Exception) {
+
             promise.reject(e)
         }
 
+    }
+
+    private fun fetchTodos(): Array<Todo> {
+        val rawData = URL("https://jsonplaceholder.typicode.com/todos").openStream().bufferedReader().use { it.readText() }
+        return Json.decodeFromString(rawData)
+
+    }
+
+    private fun todoToMap(todo: Todo): MutableMap<String, Any> {
+        return mutableMapOf(
+            "id" to todo.id,
+            "title" to todo.title,
+            "userId" to todo.userId,
+            "completed" to todo.completed
+        )
+    }
+
+    private fun makeWritableNativeTodo(todos: Array<Todo>): WritableNativeArray? {
+        val todosListNativeMap = todos.map {
+            Arguments.makeNativeMap(
+                todoToMap(it)
+            )
+        }
+
+        return Arguments.makeNativeArray(todosListNativeMap)
+    }
+
+    @ReactMethod
+    fun getTodosCb(callback: Callback) {
+        try {
+            val todos = this.fetchTodos()
+            val todosWritableNativeArray = this.makeWritableNativeTodo(todos)
+
+            callback.invoke(null, todosWritableNativeArray)
+        } catch (e: Exception) {
+            callback.invoke(e.message, null)
+        }
+    }
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    fun sayHello(name: String): String {
+        return "hello $name"
     }
 
     override fun hasConstants(): Boolean {

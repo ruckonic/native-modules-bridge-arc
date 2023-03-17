@@ -1,4 +1,15 @@
-import {SafeAreaView, Text, Button, View, StyleSheet} from 'react-native'
+import {useState} from 'react'
+import {
+  SafeAreaView,
+  Text,
+  Button,
+  StyleSheet,
+  TextInput,
+  Alert,
+  NativeModules,
+} from 'react-native'
+
+const localStorageModule = NativeModules.LocalStorageModule
 
 declare global {
   namespace ReactNavigation {
@@ -9,12 +20,20 @@ declare global {
 }
 
 export function SyncMethods() {
+  const [name, setName] = useState('')
   return (
     <SafeAreaView>
-      <View style={appStyles.buttonContainer}>
-        <Text style={appStyles.title}>Native Method</Text>
-        <Button title="Sync Method" onPress={() => {}} />
-      </View>
+      <Text style={appStyles.title}>Native Method</Text>
+
+      <TextInput onChangeText={setName} placeholder="Your Name" />
+
+      <Button
+        title="Sync"
+        onPress={() => {
+          const hello = localStorageModule.sayHello(name)
+          Alert.alert(hello)
+        }}
+      />
     </SafeAreaView>
   )
 }

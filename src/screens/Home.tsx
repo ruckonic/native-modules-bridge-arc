@@ -9,8 +9,8 @@ import {useNavigation} from '@react-navigation/native'
 
 const NavigationList = [
   'Constants',
-  'AsyncMethods',
   'SyncMethods',
+  'AsyncMethods',
   // "EventEmitter"
 ] as const
 
