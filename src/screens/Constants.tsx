@@ -10,12 +10,14 @@ declare global {
   }
 }
 
+const constats = localStorageModule.getConstants()
+
 export function Constants() {
   return (
     <SafeAreaView>
       <Text style={appStyles.title}>Native Constants</Text>
       <View style={appStyles.wrapper}>
-        <Text>{JSON.stringify(localStorageModule, null, 2)}</Text>
+        <Text>{JSON.stringify(constats, null, 2)}</Text>
       </View>
     </SafeAreaView>
   )
