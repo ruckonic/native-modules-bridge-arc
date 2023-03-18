@@ -1,7 +1,6 @@
 package com.rnlocalstorage
 
 import android.app.Application
-import android.util.Log
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactNativeHost
@@ -17,7 +16,7 @@ class MainApplication : Application(), ReactApplication {
 
         override fun getPackages() = PackageList(this).packages.apply {
             // Add your custom package
-                add(RNLocalStoragePackages())
+            // add(YOUR_PACKAGE)
         }
 
         override fun getJSMainModuleName() = "index"
