@@ -15,12 +15,6 @@ final class LocalStorageModule: NSObject, RCTBridgeModule {
   private let defaults = UserDefaults.standard
   private let keyPrincipal = "___superkey___"
   
-  override init() {
-    super.init()
-    defaults.set([:], forKey: keyPrincipal)
-    
-  }
-  
   static func moduleName() -> String! {
     return "LocalStorageModule"
   }
