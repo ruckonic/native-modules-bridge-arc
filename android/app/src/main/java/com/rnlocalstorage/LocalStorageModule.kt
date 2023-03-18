@@ -15,7 +15,7 @@ class LocalStorageModule(reactApplicationContext: ReactApplicationContext): Reac
     override fun getConstants() = mutableMapOf("keyPrincipal" to "___superkey___")
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    fun setItem(key: String, value: String): String? {
+    fun setItem(key: String, value: String): String {
         editor.putString(key, value).commit()
         return value
     }
