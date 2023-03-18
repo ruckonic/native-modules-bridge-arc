@@ -17,7 +17,7 @@ import java.net.URL
 
 
 @Serializable
-class Todo(val id: Int, val userId: Int, val title: String, val completed: Boolean)
+data class Todo(val id: Int, val userId: Int, val title: String, val completed: Boolean)
 
 class LocalStorageModule(reactContext: ReactApplicationContext): ReactContextBaseJavaModule(reactContext) {
     override fun getName(): String = "LocalStorageModule"
